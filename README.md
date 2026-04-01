@@ -1,14 +1,14 @@
-# FiyiStackDeskApp
+# FiyiStack
 
-**Low-code generator / desktop base application**
+**Low-code generator / desktop based application**
 
 ## 📄 Overview
 
-FiyiStackDeskApp is a desktop application built in C#/.NET designed as a low-code generator: a base environment that allows you to quickly create and extend web and desktop solutions with minimal effort.
+FiyiStack is a desktop application built in C#/.NET designed as a low-code generator: a base environment that allows you to quickly create and extend web and desktop solutions with minimal effort.
 
-FiyiStackDeskApp lets you quickly create CRUD applications by entering an ERD into this system. This low-code generator and catalyst allows you to create the web and desktop views to manipulate a database table.
+FiyiStack lets you quickly create CRUD applications by entering an ERD into this system. This low-code generator and catalyst allows you to create the web and desktop views to manipulate a database table.
 
-If a typical application requires 10,000 lines of code, FiyiStackDeskApp generates 7,000. For each table in a database, FiyiStackDeskApp generates at least 5,000 lines of code to make your CRUD application functional.
+If a typical application requires 10,000 lines of code, FiyiStack generates 7,000. For each table in a database, FiyiStack generates at least 5,000 lines of code to make your CRUD application functional.
 
 ## 📄 CRUD Functionalities:
 - Add and modify data, provided it passes the tests available in the entity.
@@ -23,7 +23,7 @@ Follow these steps to run the application locally:
 
 1. Clone the repository  
    ```bash
-   git clone https://github.com/fiyistack/FiyiStackDeskApp.git
+   git clone https://github.com/matiasnovillo/FiyiStack.git
 2. Do a backup of the database FiyiStackDeskApp.bak with Microsoft SQL Server Management Studio or another similar.
 4. Execute the file FiyiStackDeskApp.sln with Visual Studio.
 5. Restore NuGet packages.
