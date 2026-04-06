@@ -17,9 +17,9 @@ namespace {GeneratorConfigurationComponent.ChosenProject.Name}.Areas.{Table.Area
 {{
     public interface I{Table.Name}Repository
     {{
-        IQueryable<{Table.Name}> AsQueryable();
-
         #region Async Queries
+        Task<IQueryable<{Table.Name}>> AsQueryableAsync();
+
         Task<int> CountAsync();
 
         Task<{Table.Name}?> GetOneBy{Table.Name}IdAsync(long {Table.Name.ToLower()}Id);
@@ -51,9 +51,9 @@ namespace {GeneratorConfigurationComponent.ChosenProject.Name}.Areas.{Table.Area
         #endregion
 
         #region Methods for DataTable
-        DataTable GetAllBy{Table.Name}IdInDataTable(List<long> lstLONG{Table.Name}IdChecked);
+        Task<DataTable> GetAllBy{Table.Name}IdInDataTableAsync(List<long> lstLONG{Table.Name}IdChecked);
 
-        DataTable GetAllInDataTable();
+        Task<DataTable> GetAllInDataTableAsync();
         #endregion
     }}
 }}

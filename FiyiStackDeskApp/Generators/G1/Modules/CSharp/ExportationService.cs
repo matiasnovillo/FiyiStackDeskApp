@@ -66,17 +66,23 @@ namespace {GeneratorConfigurationComponent.ChosenProject.Name}.Areas.{Table.Area
         public void ExportToPDF(string path, List<{Table.Name}> lst{Table.Name})
         {{
             string ProjectName = ""{GeneratorConfigurationComponent.ChosenProject.Name}"";
-            string Table = ""{Table.Name}"";
-            var Renderer = new HtmlToPdf();
-            string RowsAsHTML = """";
 
+            string Table = ""{Table.Name}"";
+
+            ChromePdfRenderer ChromePdfRenderer = new();
+
+            string RowsAsHTML = """";
 
             foreach ({Table.Name}? {Table.Name} in lst{Table.Name})
             {{
-                RowsAsHTML += $@""{{{Table.Name}?.ToStringOnlyValuesForHTML()}}"";
+                RowsAsHTML += $@""
+<tr>
+    {GeneratorConfigurationComponent.G1FieldChainer.PropertiesInHTML_TD_ForExportationService}
+</tr>"";
             }}
 
-            Renderer.RenderHtmlAsPdf($@""<table cellpadding=""""0"""" cellspacing=""""0"""" border=""""0"""" width=""""88%"""" style=""""width: 88% !important; min-width: 88%; max-width: 88%;"""">
+            string FullHTMLContent = $@""
+<table cellpadding=""""0"""" cellspacing=""""0"""" border=""""0"""" width=""""88%"""" style=""""width: 88% !important; min-width: 88%; max-width: 88%;"""">
     <tr>
     <td align=""""left"""" valign=""""top"""">
         <font face=""""'Source Sans Pro', sans-serif"""" color=""""#1a1a1a"""" style=""""font-size: 52px; line-height: 55px; font-weight: 300; letter-spacing: -1.5px;"""">
@@ -93,112 +99,7 @@ namespace {GeneratorConfigurationComponent.ChosenProject.Name}.Areas.{Table.Area
 <br>
 <table cellpadding=""""0"""" cellspacing=""""0"""" border=""""0"""" width=""""100%"""" style=""""width: 100% !important; min-width: 100%; max-width: 100%;"""">
     <tr>
-        <th align=""""left"""" valign=""""top"""" style=""""border-width: 1px; border-style: solid; border-color: #e8e8e8; border-top: none; border-left: none; border-right: none;"""">
-            <font face=""""'Source Sans Pro', sans-serif"""" color=""""#000000"""" style=""""font-size: 20px; line-height: 28px; font-weight: 600;"""">
-                <span style=""""font-family: 'Source Sans Pro', Arial, Tahoma, Geneva, sans-serif; color: #000000; font-size: 20px; line-height: 28px; font-weight: 600;"""">{Table.Name}Id&nbsp;&nbsp;&nbsp;</span>
-            </font>
-            <div style=""""height: 10px; line-height: 10px; font-size: 8px;"""">&nbsp;</div>
-        </th><th align=""""left"""" valign=""""top"""" style=""""border-width: 1px; border-style: solid; border-color: #e8e8e8; border-top: none; border-left: none; border-right: none;"""">
-            <font face=""""'Source Sans Pro', sans-serif"""" color=""""#000000"""" style=""""font-size: 20px; line-height: 28px; font-weight: 600;"""">
-                <span style=""""font-family: 'Source Sans Pro', Arial, Tahoma, Geneva, sans-serif; color: #000000; font-size: 20px; line-height: 28px; font-weight: 600;"""">Active&nbsp;&nbsp;&nbsp;</span>
-            </font>
-            <div style=""""height: 10px; line-height: 10px; font-size: 8px;"""">&nbsp;</div>
-        </th><th align=""""left"""" valign=""""top"""" style=""""border-width: 1px; border-style: solid; border-color: #e8e8e8; border-top: none; border-left: none; border-right: none;"""">
-            <font face=""""'Source Sans Pro', sans-serif"""" color=""""#000000"""" style=""""font-size: 20px; line-height: 28px; font-weight: 600;"""">
-                <span style=""""font-family: 'Source Sans Pro', Arial, Tahoma, Geneva, sans-serif; color: #000000; font-size: 20px; line-height: 28px; font-weight: 600;"""">DateTimeCreation&nbsp;&nbsp;&nbsp;</span>
-            </font>
-            <div style=""""height: 10px; line-height: 10px; font-size: 8px;"""">&nbsp;</div>
-        </th><th align=""""left"""" valign=""""top"""" style=""""border-width: 1px; border-style: solid; border-color: #e8e8e8; border-top: none; border-left: none; border-right: none;"""">
-            <font face=""""'Source Sans Pro', sans-serif"""" color=""""#000000"""" style=""""font-size: 20px; line-height: 28px; font-weight: 600;"""">
-                <span style=""""font-family: 'Source Sans Pro', Arial, Tahoma, Geneva, sans-serif; color: #000000; font-size: 20px; line-height: 28px; font-weight: 600;"""">DateTimeLastModification&nbsp;&nbsp;&nbsp;</span>
-            </font>
-            <div style=""""height: 10px; line-height: 10px; font-size: 8px;"""">&nbsp;</div>
-        </th><th align=""""left"""" valign=""""top"""" style=""""border-width: 1px; border-style: solid; border-color: #e8e8e8; border-top: none; border-left: none; border-right: none;"""">
-            <font face=""""'Source Sans Pro', sans-serif"""" color=""""#000000"""" style=""""font-size: 20px; line-height: 28px; font-weight: 600;"""">
-                <span style=""""font-family: 'Source Sans Pro', Arial, Tahoma, Geneva, sans-serif; color: #000000; font-size: 20px; line-height: 28px; font-weight: 600;"""">UserCreationId&nbsp;&nbsp;&nbsp;</span>
-            </font>
-            <div style=""""height: 10px; line-height: 10px; font-size: 8px;"""">&nbsp;</div>
-        </th><th align=""""left"""" valign=""""top"""" style=""""border-width: 1px; border-style: solid; border-color: #e8e8e8; border-top: none; border-left: none; border-right: none;"""">
-            <font face=""""'Source Sans Pro', sans-serif"""" color=""""#000000"""" style=""""font-size: 20px; line-height: 28px; font-weight: 600;"""">
-                <span style=""""font-family: 'Source Sans Pro', Arial, Tahoma, Geneva, sans-serif; color: #000000; font-size: 20px; line-height: 28px; font-weight: 600;"""">UserLastModificationId&nbsp;&nbsp;&nbsp;</span>
-            </font>
-            <div style=""""height: 10px; line-height: 10px; font-size: 8px;"""">&nbsp;</div>
-        </th><th align=""""left"""" valign=""""top"""" style=""""border-width: 1px; border-style: solid; border-color: #e8e8e8; border-top: none; border-left: none; border-right: none;"""">
-            <font face=""""'Source Sans Pro', sans-serif"""" color=""""#000000"""" style=""""font-size: 20px; line-height: 28px; font-weight: 600;"""">
-                <span style=""""font-family: 'Source Sans Pro', Arial, Tahoma, Geneva, sans-serif; color: #000000; font-size: 20px; line-height: 28px; font-weight: 600;"""">Boolean&nbsp;&nbsp;&nbsp;</span>
-            </font>
-            <div style=""""height: 10px; line-height: 10px; font-size: 8px;"""">&nbsp;</div>
-        </th><th align=""""left"""" valign=""""top"""" style=""""border-width: 1px; border-style: solid; border-color: #e8e8e8; border-top: none; border-left: none; border-right: none;"""">
-            <font face=""""'Source Sans Pro', sans-serif"""" color=""""#000000"""" style=""""font-size: 20px; line-height: 28px; font-weight: 600;"""">
-                <span style=""""font-family: 'Source Sans Pro', Arial, Tahoma, Geneva, sans-serif; color: #000000; font-size: 20px; line-height: 28px; font-weight: 600;"""">DateTime&nbsp;&nbsp;&nbsp;</span>
-            </font>
-            <div style=""""height: 10px; line-height: 10px; font-size: 8px;"""">&nbsp;</div>
-        </th><th align=""""left"""" valign=""""top"""" style=""""border-width: 1px; border-style: solid; border-color: #e8e8e8; border-top: none; border-left: none; border-right: none;"""">
-            <font face=""""'Source Sans Pro', sans-serif"""" color=""""#000000"""" style=""""font-size: 20px; line-height: 28px; font-weight: 600;"""">
-                <span style=""""font-family: 'Source Sans Pro', Arial, Tahoma, Geneva, sans-serif; color: #000000; font-size: 20px; line-height: 28px; font-weight: 600;"""">Decimal&nbsp;&nbsp;&nbsp;</span>
-            </font>
-            <div style=""""height: 10px; line-height: 10px; font-size: 8px;"""">&nbsp;</div>
-        </th><th align=""""left"""" valign=""""top"""" style=""""border-width: 1px; border-style: solid; border-color: #e8e8e8; border-top: none; border-left: none; border-right: none;"""">
-            <font face=""""'Source Sans Pro', sans-serif"""" color=""""#000000"""" style=""""font-size: 20px; line-height: 28px; font-weight: 600;"""">
-                <span style=""""font-family: 'Source Sans Pro', Arial, Tahoma, Geneva, sans-serif; color: #000000; font-size: 20px; line-height: 28px; font-weight: 600;"""">Integer&nbsp;&nbsp;&nbsp;</span>
-            </font>
-            <div style=""""height: 10px; line-height: 10px; font-size: 8px;"""">&nbsp;</div>
-        </th><th align=""""left"""" valign=""""top"""" style=""""border-width: 1px; border-style: solid; border-color: #e8e8e8; border-top: none; border-left: none; border-right: none;"""">
-            <font face=""""'Source Sans Pro', sans-serif"""" color=""""#000000"""" style=""""font-size: 20px; line-height: 28px; font-weight: 600;"""">
-                <span style=""""font-family: 'Source Sans Pro', Arial, Tahoma, Geneva, sans-serif; color: #000000; font-size: 20px; line-height: 28px; font-weight: 600;"""">TextArea&nbsp;&nbsp;&nbsp;</span>
-            </font>
-            <div style=""""height: 10px; line-height: 10px; font-size: 8px;"""">&nbsp;</div>
-        </th><th align=""""left"""" valign=""""top"""" style=""""border-width: 1px; border-style: solid; border-color: #e8e8e8; border-top: none; border-left: none; border-right: none;"""">
-            <font face=""""'Source Sans Pro', sans-serif"""" color=""""#000000"""" style=""""font-size: 20px; line-height: 28px; font-weight: 600;"""">
-                <span style=""""font-family: 'Source Sans Pro', Arial, Tahoma, Geneva, sans-serif; color: #000000; font-size: 20px; line-height: 28px; font-weight: 600;"""">TextBasic&nbsp;&nbsp;&nbsp;</span>
-            </font>
-            <div style=""""height: 10px; line-height: 10px; font-size: 8px;"""">&nbsp;</div>
-        </th><th align=""""left"""" valign=""""top"""" style=""""border-width: 1px; border-style: solid; border-color: #e8e8e8; border-top: none; border-left: none; border-right: none;"""">
-            <font face=""""'Source Sans Pro', sans-serif"""" color=""""#000000"""" style=""""font-size: 20px; line-height: 28px; font-weight: 600;"""">
-                <span style=""""font-family: 'Source Sans Pro', Arial, Tahoma, Geneva, sans-serif; color: #000000; font-size: 20px; line-height: 28px; font-weight: 600;"""">TextEditor&nbsp;&nbsp;&nbsp;</span>
-            </font>
-            <div style=""""height: 10px; line-height: 10px; font-size: 8px;"""">&nbsp;</div>
-        </th><th align=""""left"""" valign=""""top"""" style=""""border-width: 1px; border-style: solid; border-color: #e8e8e8; border-top: none; border-left: none; border-right: none;"""">
-            <font face=""""'Source Sans Pro', sans-serif"""" color=""""#000000"""" style=""""font-size: 20px; line-height: 28px; font-weight: 600;"""">
-                <span style=""""font-family: 'Source Sans Pro', Arial, Tahoma, Geneva, sans-serif; color: #000000; font-size: 20px; line-height: 28px; font-weight: 600;"""">TextEmail&nbsp;&nbsp;&nbsp;</span>
-            </font>
-            <div style=""""height: 10px; line-height: 10px; font-size: 8px;"""">&nbsp;</div>
-        </th><th align=""""left"""" valign=""""top"""" style=""""border-width: 1px; border-style: solid; border-color: #e8e8e8; border-top: none; border-left: none; border-right: none;"""">
-            <font face=""""'Source Sans Pro', sans-serif"""" color=""""#000000"""" style=""""font-size: 20px; line-height: 28px; font-weight: 600;"""">
-                <span style=""""font-family: 'Source Sans Pro', Arial, Tahoma, Geneva, sans-serif; color: #000000; font-size: 20px; line-height: 28px; font-weight: 600;"""">TextFile&nbsp;&nbsp;&nbsp;</span>
-            </font>
-            <div style=""""height: 10px; line-height: 10px; font-size: 8px;"""">&nbsp;</div>
-        </th><th align=""""left"""" valign=""""top"""" style=""""border-width: 1px; border-style: solid; border-color: #e8e8e8; border-top: none; border-left: none; border-right: none;"""">
-            <font face=""""'Source Sans Pro', sans-serif"""" color=""""#000000"""" style=""""font-size: 20px; line-height: 28px; font-weight: 600;"""">
-                <span style=""""font-family: 'Source Sans Pro', Arial, Tahoma, Geneva, sans-serif; color: #000000; font-size: 20px; line-height: 28px; font-weight: 600;"""">TextHexColour&nbsp;&nbsp;&nbsp;</span>
-            </font>
-            <div style=""""height: 10px; line-height: 10px; font-size: 8px;"""">&nbsp;</div>
-        </th><th align=""""left"""" valign=""""top"""" style=""""border-width: 1px; border-style: solid; border-color: #e8e8e8; border-top: none; border-left: none; border-right: none;"""">
-            <font face=""""'Source Sans Pro', sans-serif"""" color=""""#000000"""" style=""""font-size: 20px; line-height: 28px; font-weight: 600;"""">
-                <span style=""""font-family: 'Source Sans Pro', Arial, Tahoma, Geneva, sans-serif; color: #000000; font-size: 20px; line-height: 28px; font-weight: 600;"""">TextPassword&nbsp;&nbsp;&nbsp;</span>
-            </font>
-            <div style=""""height: 10px; line-height: 10px; font-size: 8px;"""">&nbsp;</div>
-        </th><th align=""""left"""" valign=""""top"""" style=""""border-width: 1px; border-style: solid; border-color: #e8e8e8; border-top: none; border-left: none; border-right: none;"""">
-            <font face=""""'Source Sans Pro', sans-serif"""" color=""""#000000"""" style=""""font-size: 20px; line-height: 28px; font-weight: 600;"""">
-                <span style=""""font-family: 'Source Sans Pro', Arial, Tahoma, Geneva, sans-serif; color: #000000; font-size: 20px; line-height: 28px; font-weight: 600;"""">TextPhoneNumber&nbsp;&nbsp;&nbsp;</span>
-            </font>
-            <div style=""""height: 10px; line-height: 10px; font-size: 8px;"""">&nbsp;</div>
-        </th><th align=""""left"""" valign=""""top"""" style=""""border-width: 1px; border-style: solid; border-color: #e8e8e8; border-top: none; border-left: none; border-right: none;"""">
-            <font face=""""'Source Sans Pro', sans-serif"""" color=""""#000000"""" style=""""font-size: 20px; line-height: 28px; font-weight: 600;"""">
-                <span style=""""font-family: 'Source Sans Pro', Arial, Tahoma, Geneva, sans-serif; color: #000000; font-size: 20px; line-height: 28px; font-weight: 600;"""">TextTag&nbsp;&nbsp;&nbsp;</span>
-            </font>
-            <div style=""""height: 10px; line-height: 10px; font-size: 8px;"""">&nbsp;</div>
-        </th><th align=""""left"""" valign=""""top"""" style=""""border-width: 1px; border-style: solid; border-color: #e8e8e8; border-top: none; border-left: none; border-right: none;"""">
-            <font face=""""'Source Sans Pro', sans-serif"""" color=""""#000000"""" style=""""font-size: 20px; line-height: 28px; font-weight: 600;"""">
-                <span style=""""font-family: 'Source Sans Pro', Arial, Tahoma, Geneva, sans-serif; color: #000000; font-size: 20px; line-height: 28px; font-weight: 600;"""">TextURL&nbsp;&nbsp;&nbsp;</span>
-            </font>
-            <div style=""""height: 10px; line-height: 10px; font-size: 8px;"""">&nbsp;</div>
-        </th><th align=""""left"""" valign=""""top"""" style=""""border-width: 1px; border-style: solid; border-color: #e8e8e8; border-top: none; border-left: none; border-right: none;"""">
-            <font face=""""'Source Sans Pro', sans-serif"""" color=""""#000000"""" style=""""font-size: 20px; line-height: 28px; font-weight: 600;"""">
-                <span style=""""font-family: 'Source Sans Pro', Arial, Tahoma, Geneva, sans-serif; color: #000000; font-size: 20px; line-height: 28px; font-weight: 600;"""">{Table.Name}StatusId&nbsp;&nbsp;&nbsp;</span>
-            </font>
-            <div style=""""height: 10px; line-height: 10px; font-size: 8px;"""">&nbsp;</div>
-        </th>
+        {GeneratorConfigurationComponent.G1FieldChainer.PropertiesInHTML_TH_ForExportationService}
     </tr>
     {{RowsAsHTML}}
 </table>
@@ -206,7 +107,9 @@ namespace {GeneratorConfigurationComponent.ChosenProject.Name}.Areas.{Table.Area
 <font face=""""'Source Sans Pro', sans-serif"""" color=""""#868686"""" style=""""font-size: 17px; line-height: 20px;"""">
     <span style=""""font-family: 'Source Sans Pro', Arial, Tahoma, Geneva, sans-serif; color: #868686; font-size: 17px; line-height: 20px;"""">Printed on: {{DateTime.Now}}</span>
 </font>
-"").SaveAs(path);
+"";
+
+            ChromePdfRenderer.RenderHtmlAsPdf(FullHTMLContent).SaveAs(path);
         }}
     }}
 }}
@@ -214,7 +117,7 @@ namespace {GeneratorConfigurationComponent.ChosenProject.Name}.Areas.{Table.Area
 
                 return Content;
             }
-            catch (Exception ex) { throw ex; }
+            catch (Exception) { throw; }
         }
     }
 }

@@ -22,8 +22,8 @@ namespace FiyiStackDeskApp.Forms
                 cambiarDatosDeUsuarioToolStripMenuItem.Visible = false;
                 cerrarSesionToolStripMenuItem.Visible = false;
 
-                txtEmail.Text = "";
-                txtLoginPassword.Text = "";
+                txtEmail.Text = "novillo.matias1@gmail.com";
+                txtLoginPassword.Text = "z";
                 txtEmail.TabIndex = 0;
                 txtLoginPassword.TabIndex = 1;
             }

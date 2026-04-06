@@ -21,30 +21,28 @@ using System.Data;
 
 namespace {GeneratorConfigurationComponent.ChosenProject.Name}.Areas.{Table.Area}.{Table.Name}Back.Repositories
 {{
-    public class {Table.Name}Repository : I{Table.Name}Repository
+    public class {Table.Name}Repository(
+        IDbContextFactory<{GeneratorConfigurationComponent.ChosenProject.Name}DbContext> _factory) : I{Table.Name}Repository
     {{
-        protected readonly {GeneratorConfigurationComponent.ChosenProject.Name}DbContext _dbContext;
-
-        public {Table.Name}Repository({GeneratorConfigurationComponent.ChosenProject.Name}DbContext dbContext)
-        {{
-            _dbContext = dbContext;
-        }}
-
-        public IQueryable<{Table.Name}> AsQueryable()
+        #region Async Queries    
+        public async Task<IQueryable<{Table.Name}>> AsQueryableAsync()
         {{
             try
             {{
-                return _dbContext.{Table.Name}.AsQueryable();
+                await using var DbContext = await _factory.CreateDbContextAsync();
+
+                return DbContext.{Table.Name}.AsQueryable();
             }}
             catch (Exception) {{ throw; }}
         }}
 
-        #region Async Queries        
         public async Task<int> CountAsync()
         {{
             try
             {{
-                return await _dbContext.{Table.Name}.CountAsync();
+                await using var DbContext = await _factory.CreateDbContextAsync();                
+
+                return await DbContext.{Table.Name}.CountAsync();
             }}
             catch (Exception) {{ throw; }}
         }}
@@ -53,7 +51,9 @@ namespace {GeneratorConfigurationComponent.ChosenProject.Name}.Areas.{Table.Area
         {{
             try
             {{
-                return await _dbContext.{Table.Name}
+                await using var DbContext = await _factory.CreateDbContextAsync();
+                
+                return await DbContext.{Table.Name}
                                 .FirstOrDefaultAsync(x => x.{Table.Name}Id == {Table.Name.ToLower()}Id);
             }}
             catch (Exception) {{ throw; }}
@@ -63,7 +63,9 @@ namespace {GeneratorConfigurationComponent.ChosenProject.Name}.Areas.{Table.Area
         {{
             try
             {{
-                return await _dbContext.{Table.Name}.ToListAsync();
+                await using var DbContext = await _factory.CreateDbContextAsync();
+
+                return await DbContext.{Table.Name}.ToListAsync();
             }}
             catch (Exception) {{ throw; }}
         }}
@@ -72,7 +74,9 @@ namespace {GeneratorConfigurationComponent.ChosenProject.Name}.Areas.{Table.Area
         {{
             try
             {{
-                return await _dbContext.{Table.Name}
+                await using var DbContext = await _factory.CreateDbContextAsync();
+
+                return await DbContext.{Table.Name}
                                        .Where(x => lstLONG{Table.Name}IdChecked.Contains(x.{Table.Name}Id))
                                        .ToListAsync();
             }}
@@ -83,7 +87,9 @@ namespace {GeneratorConfigurationComponent.ChosenProject.Name}.Areas.{Table.Area
         {{
             try
             {{
-                return await _dbContext.{Table.Name}
+                await using var DbContext = await _factory.CreateDbContextAsync();
+
+                return await DbContext.{Table.Name}
                                        .Where(x => x.{Table.Name}Id.ToString().Contains(textToSearch))
                                        .ToListAsync();
             }}
@@ -97,14 +103,14 @@ namespace {GeneratorConfigurationComponent.ChosenProject.Name}.Areas.{Table.Area
         {{
             try
             {{
+                await using var DbContext = await _factory.CreateDbContextAsync();
+
                 string[] words = Regex
                     .Replace(textToSearch
                     .Trim(), @""\s+"", "" "")
                     .Split("" "");
 
-                int Total{Table.Name} = await _dbContext.{Table.Name}.CountAsync();
-
-                List<{Table.Name}> lst{Table.Name} = await _dbContext.{Table.Name}
+                List<{Table.Name}> lst{Table.Name} = await DbContext.{Table.Name}
                     .AsQueryable()
                     .Where(x => strictSearch ?
                         words.All(word => x.{Table.Name}Id.ToString().Contains(word)) :
@@ -114,7 +120,7 @@ namespace {GeneratorConfigurationComponent.ChosenProject.Name}.Areas.{Table.Area
                     .Take(pageSize)
                     .ToListAsync();
 
-
+                int Total{Table.Name} = lst{Table.Name}.Count;
 
                 List<long> lstLONGUserCreationId = lst{Table.Name}
                     .Select(x => x.UserCreationId)
@@ -124,11 +130,11 @@ namespace {GeneratorConfigurationComponent.ChosenProject.Name}.Areas.{Table.Area
                     .Select(x => x.UserLastModificationId)
                     .ToList();
 
-                List<User> lstUserCreation = await _dbContext.User
+                List<User> lstUserCreation = await DbContext.User
                     .Where(x => lstLONGUserCreationId.Contains(x.UserCreationId))
                     .ToListAsync();
 
-                List<User> lstUserLastModification = await _dbContext.User
+                List<User> lstUserLastModification = await DbContext.User
                     .Where(x => lstLONGUserLastModificationId.Contains(x.UserLastModificationId))
                     .ToListAsync();
 
@@ -151,9 +157,11 @@ namespace {GeneratorConfigurationComponent.ChosenProject.Name}.Areas.{Table.Area
         {{
             try
             {{
-                EntityEntry<{Table.Name}> {Table.Name}ToAdd = await _dbContext.{Table.Name}.AddAsync({Table.Name.ToLower()});
+                await using var DbContext = await _factory.CreateDbContextAsync();
 
-                bool result = await _dbContext.SaveChangesAsync() > 0;
+                EntityEntry<{Table.Name}> {Table.Name}ToAdd = await DbContext.{Table.Name}.AddAsync({Table.Name.ToLower()});
+
+                bool result = await DbContext.SaveChangesAsync() > 0;
 
                 return result;
             }}
@@ -164,9 +172,11 @@ namespace {GeneratorConfigurationComponent.ChosenProject.Name}.Areas.{Table.Area
         {{
             try
             {{
-                await _dbContext.{Table.Name}.AddRangeAsync(lst{Table.Name});
+                await using var DbContext = await _factory.CreateDbContextAsync();
 
-                bool result = await _dbContext.SaveChangesAsync() > 0;
+                await DbContext.{Table.Name}.AddRangeAsync(lst{Table.Name});
+
+                bool result = await DbContext.SaveChangesAsync() > 0;
 
                 return result;
             }}
@@ -177,9 +187,11 @@ namespace {GeneratorConfigurationComponent.ChosenProject.Name}.Areas.{Table.Area
         {{
             try
             {{
-                _dbContext.{Table.Name}.Update({Table.Name.ToLower()});
+                await using var DbContext = await _factory.CreateDbContextAsync();
 
-                bool result = await _dbContext.SaveChangesAsync() > 0;
+                DbContext.{Table.Name}.Update({Table.Name.ToLower()});
+
+                bool result = await DbContext.SaveChangesAsync() > 0;
 
                 return result;
             }}
@@ -190,11 +202,13 @@ namespace {GeneratorConfigurationComponent.ChosenProject.Name}.Areas.{Table.Area
         {{
             try
             {{
-                await _dbContext.{Table.Name}
+                await using var DbContext = await _factory.CreateDbContextAsync();
+
+                await DbContext.{Table.Name}
                     .Where(x => x.{Table.Name}Id == {Table.Name.ToLower()}Id)
                     .ExecuteDeleteAsync();
 
-                bool Result = await _dbContext.SaveChangesAsync() > 0;
+                bool Result = await DbContext.SaveChangesAsync() > 0;
 
                 return Result;
             }}
@@ -205,7 +219,9 @@ namespace {GeneratorConfigurationComponent.ChosenProject.Name}.Areas.{Table.Area
         {{
             try
             {{
-                await _dbContext.{Table.Name}
+                await using var DbContext = await _factory.CreateDbContextAsync();
+
+                await DbContext.{Table.Name}
                     .ExecuteDeleteAsync();
 
                 return true;
@@ -220,9 +236,11 @@ namespace {GeneratorConfigurationComponent.ChosenProject.Name}.Areas.{Table.Area
         {{
             try
             {{
-                _dbContext.{Table.Name}.RemoveRange(lst{Table.Name});
+                await using var DbContext = await _factory.CreateDbContextAsync();
 
-                int AffectedRows = await _dbContext.SaveChangesAsync();
+                DbContext.{Table.Name}.RemoveRange(lst{Table.Name});
+
+                int AffectedRows = await DbContext.SaveChangesAsync();
 
                 bool Result = AffectedRows > 0;
 
@@ -233,17 +251,20 @@ namespace {GeneratorConfigurationComponent.ChosenProject.Name}.Areas.{Table.Area
         #endregion
 
         #region Methods for DataTable
-        public DataTable GetAllBy{Table.Name}IdInDataTable(List<long> lst{Table.Name}Checked)
+        public async Task<DataTable> GetAllBy{Table.Name}IdInDataTableAsync(List<long> lst{Table.Name}Checked)
         {{
             try
             {{
+                await using var DbContext = await _factory.CreateDbContextAsync();
+
                 DataTable DataTable = new();
                 DataTable.Columns.Add(""{Table.Name}Id"", typeof(string));
                 {GeneratorConfigurationComponent.G1FieldChainer.PropertiesForRepository_DataTable1}
 
                 foreach (long {Table.Name}Id in lst{Table.Name}Checked)
                 {{
-                    {Table.Name} {Table.Name.ToLower()} = _dbContext.{Table.Name}.Where(x => x.{Table.Name}Id == {Table.Name}Id).FirstOrDefault();
+                    {Table.Name} {Table.Name.ToLower()} = await DbContext.{Table.Name}
+                        .Where(x => x.{Table.Name}Id == {Table.Name}Id).FirstOrDefaultAsync();
 
                     if ({Table.Name.ToLower()} != null)
                     {{
@@ -258,11 +279,14 @@ namespace {GeneratorConfigurationComponent.ChosenProject.Name}.Areas.{Table.Area
             catch (Exception) {{ throw; }}
         }}
 
-        public DataTable GetAllInDataTable()
+        public async Task<DataTable> GetAllInDataTableAsync()
         {{
             try
             {{
-                List<{Table.Name}> lst{Table.Name} = _dbContext.{Table.Name}.ToList();
+                await using var DbContext = await _factory.CreateDbContextAsync();
+
+                List<{Table.Name}> lst{Table.Name} = await DbContext.{Table.Name}
+                    .ToListAsync();
 
                 DataTable DataTable = new();
                 DataTable.Columns.Add(""{Table.Name}Id"", typeof(string));
@@ -286,7 +310,7 @@ namespace {GeneratorConfigurationComponent.ChosenProject.Name}.Areas.{Table.Area
 
                 return Content;
             }
-            catch (Exception ex) { throw ex; }
+            catch (Exception) { throw; }
         }
     }
 }

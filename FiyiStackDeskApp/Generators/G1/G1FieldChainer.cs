@@ -11,7 +11,8 @@ namespace FiyiStackDeskApp.Generators.G1
 
         public string PropertiesForEntityConfiguration { get; set; } = "";
 
-        public string PropertiesInHTMLForEntity { get; set; } = "";
+        public string PropertiesInHTML_TD_ForExportationService { get; set; } = "";
+        public string PropertiesInHTML_TH_ForExportationService { get; set; } = "";
 
         public string PropertiesInHTML_TH_ForBlazorPageQuery { get; set; } = "";
 
@@ -46,6 +47,7 @@ namespace FiyiStackDeskApp.Generators.G1
         public string ForeignListsGet_BlazorNonQueryPage { get; set; } = "";
         public string EditPartFK_BlazorNonQueryPage { get; set; } = "";
         public string ForeignLists_DTO { get; set; } = "";
+        public string CancelationTokensProperties_BlazorNonQueryPage { get; set; } = "";
 
         public string ModalsInBlazorPageNonQuery { get; set; } = "";
 
@@ -71,13 +73,23 @@ namespace FiyiStackDeskApp.Generators.G1
         ///</summary>
 ";
 
-                PropertiesInHTMLForEntity += $@"<td align=""""left"""" valign=""""top"""">
+                PropertiesInHTML_TD_ForExportationService += $@"
+    <td align=""""left"""" valign=""""top"""">
         <div style=""""height: 12px; line-height: 12px; font-size: 10px;"""">&nbsp;</div>
         <font face=""""'Source Sans Pro', sans-serif"""" color=""""#000000"""" style=""""font-size: 20px; line-height: 28px;"""">
-            <span style=""""font-family: 'Source Sans Pro', Arial, Tahoma, Geneva, sans-serif; color: #000000; font-size: 20px; line-height: 28px;"""">{{{field.Name}}}</span>
+            <span style=""""font-family: 'Source Sans Pro', Arial, Tahoma, Geneva, sans-serif; color: #000000; font-size: 20px; line-height: 28px;"""">{{{Table.Name}.{field.Name}}}</span>
         </font>
         <div style=""""height: 40px; line-height: 40px; font-size: 38px;"""">&nbsp;</div>
     </td>";
+
+                PropertiesInHTML_TH_ForExportationService += $@"
+    <th align=""""left"""" valign=""""top"""" style=""""border-width: 1px; border-style: solid; border-color: #e8e8e8; border-top: none; border-left: none; border-right: none;"""">
+        <font face=""""'Source Sans Pro', sans-serif"""" color=""""#000000"""" style=""""font-size: 20px; line-height: 28px; font-weight: 600;"""">
+            <span style=""""font-family: 'Source Sans Pro', Arial, Tahoma, Geneva, sans-serif; color: #000000; font-size: 20px; line-height: 28px; font-weight: 600;"""">{field.Name}</span>
+        </font>
+        <div style=""""height: 10px; line-height: 10px; font-size: 8px;"""">&nbsp;</div>
+    </th>
+    ";
 
                 Properties_ForExcel_Converter_DefineDataColumns += $@"DataColumn dtColumn{field.Name}Fordt{Table.Name}Copy = new()
             {{
@@ -114,14 +126,15 @@ namespace FiyiStackDeskApp.Generators.G1
 $@"//{field.Name}
                 entity.Property(e => e.{field.Name})
                     .HasColumnType(""bigint"")
-                    .IsRequired(true);
+                    .IsRequired({(field.Nullable == true ? "false" : "true")});
 
                 ";
 
                         if (field.Name != "UserCreationId" && field.Name != "UserLastModificationId")
                         {
                             PropertiesForEntity +=
-$@"        public long {field.Name} {{ get; set; }}
+$@"        [Long(required: {(field.Nullable == true ? "false" : "true")}, minimum: {field.MinValue}, maximum: {field.MaxValue})]        
+        public long{(field.Nullable == true ? "?" : "")} {field.Name} {{ get; set; }}
 ";
 
                             Handlers_InNonQueryBlazor += $@"private async Task Handle{field.Name}Change(ChangeEventArgs e)
@@ -197,7 +210,7 @@ $@"        public long {field.Name} {{ get; set; }}
                             if (field.Name == "UserCreationId")
                             {
                                 PropertiesForEntity +=
-$@"        [Library.ModelAttributeValidator.IntOrLong(""{field.Name}"", ""{field.Name}"", false, {field.MinValue}, {field.MaxValue})]
+$@"        [Range(1, long.MaxValue)]
         public long {field.Name} {{ get; set; }}
 ";
                             }
@@ -205,7 +218,7 @@ $@"        [Library.ModelAttributeValidator.IntOrLong(""{field.Name}"", ""{field
                             if (field.Name == "UserLastModificationId")
                             {
                                 PropertiesForEntity +=
-    $@"        [Library.ModelAttributeValidator.IntOrLong(""{field.Name}"", ""{field.Name}"", false, {field.MinValue}, {field.MaxValue})]
+    $@"        [Range(1, long.MaxValue)]
         public long {field.Name} {{ get; set; }}
 ";
                             }
@@ -218,7 +231,7 @@ $@"        [Library.ModelAttributeValidator.IntOrLong(""{field.Name}"", ""{field
 $@"//{field.Name}
                 entity.Property(e => e.{field.Name})
                     .HasColumnType(""tinyint"")
-                    .IsRequired(true);
+                    .IsRequired({(field.Nullable == true ? "false" : "true")});
 
                 ";
 
@@ -226,8 +239,7 @@ $@"//{field.Name}
                         {
 
                             PropertiesForEntity +=
-$@"        {(field.Nullable == true ? "" : $@"[Library.ModelAttributeValidator.Required(""{field.Name}"", ""{field.Name}"")]")}  
-        public bool {field.Name} {{ get; set; }}
+$@"        public bool{(field.Nullable == true ? "?" : "")} {field.Name} {{ get; set; }}
 ";
 
                             PropertiesInHTML_BlazorNonQueryPage += $@"<!--{field.Name}-->
@@ -331,8 +343,8 @@ $@"        public bool {field.Name} {{ get; set; }}
                         iForImportInService += 1;
 
                         PropertiesForEntity +=
-$@"        [Library.ModelAttributeValidator.String(""{field.Name}"", ""{field.Name}"", {(field.Nullable == true ? "false" : "true")}, {field.MinValue}, {field.MaxValue}, {(field.Regex == "" ? @"""""" : $@"""{field.Regex}""")})]
-        public string? {field.Name} {{ get; set; }}
+$@"        [String(required: {(field.Nullable == true ? "false" : "true")}, minimumLength: {field.MinValue}, maximumLength: {field.MaxValue}, pattern: ""{field.Regex}"")]
+        public string{(field.Nullable == true ? "?" : "")} {field.Name} {{ get; set; }}{(field.Nullable == true ? "" : " = string.Empty;")}
 ";
 
                         PropertiesForEntityConfiguration +=
@@ -414,15 +426,15 @@ $@"//{field.Name}
                         iForImportInService += 1;
 
                         PropertiesForEntity +=
-$@"        [Library.ModelAttributeValidator.Decimal(""{field.Name}"", ""{field.Name}"", true, {field.MinValue.Replace(',', '.')}D, {field.MaxValue.Replace(',', '.')}D)]
-        public decimal {field.Name} {{ get; set; }}
+$@"        [DecimalRange(required: {(field.Nullable == true ? "false" : "true")}, minimum: {field.MinValue}D, maximum: {field.MaxValue}D)]
+        public decimal{(field.Nullable == true ? "?" : "")} {field.Name} {{ get; set; }}
 ";
 
                         PropertiesForEntityConfiguration +=
 $@"//{field.Name}
                 entity.Property(e => e.{field.Name})
                     .HasColumnType(""numeric(18, 2)"")
-                    .IsRequired(true);
+                    .IsRequired({(field.Nullable == true ? "false" : "true")});
 
                 ";
 
@@ -460,8 +472,8 @@ $@"//{field.Name}
                                     ";
 
                         PropertiesForEntity +=
-$@"
-        public long {field.Name} {{ get; set; }}
+$@"[Key]
+        public long{(field.Nullable == true ? "?" : "")} {field.Name} {{ get; set; }}
 ";
 
                         PropertiesInHTML_TD_ForBlazorPageQuery += $@"<td>@paginated{Table.Name}DTO.lst{Table.Name}[i]?.{Table.Name}Id</td>
@@ -477,15 +489,15 @@ $@"
 $@"//{field.Name}
                 entity.Property(e => e.{field.Name})
                     .HasColumnType(""datetime"")
-                    .IsRequired(true);
+                    .IsRequired({(field.Nullable == true ? "false" : "true")});
 
                 ";
 
                         if (field.Name != "DateTimeCreation" && field.Name != "DateTimeLastModification")
                         {
                             PropertiesForEntity +=
-$@"        [Library.ModelAttributeValidator.DateTime(""{field.Name}"", ""{field.Name}"", true, ""{field.MinValue}"", ""{field.MaxValue}"")]
-        public DateTime {field.Name} {{ get; set; }}
+$@"        [DateTimeRange(required: {(field.Nullable == true ? "false" : "true")}, minimumDate: ""{field.MinValue}"", maximumDate: ""{field.MaxValue}"")]
+        public DateTime{(field.Nullable == true ? "?" : "")} {field.Name} {{ get; set; }}
 ";
 
                             Handlers_InNonQueryBlazor += $@"private async Task Handle{field.Name}Change(ChangeEventArgs e)
@@ -550,7 +562,8 @@ $@"        [Library.ModelAttributeValidator.DateTime(""{field.Name}"", ""{field.
                         else
                         {
                             PropertiesForEntity +=
-$@"        public DateTime {field.Name} {{ get; set; }}
+$@"        [DateTimeRange(required: true, minimumDate: ""0001-01-01T00:00:00.0000000"", maximumDate: ""9999-12-31T23:59:59.9999999"")]
+        public DateTime {field.Name} {{ get; set; }}
 ";
                         }
                         break;
@@ -591,15 +604,15 @@ $@"        public DateTime {field.Name} {{ get; set; }}
                         iForImportInService += 1;
 
                         PropertiesForEntity +=
-$@"        [Library.ModelAttributeValidator.TimeSpan(""{field.Name}"", ""{field.Name}"", true, ""{field.MinValue}"", ""{field.MaxValue}"")]
-        public TimeSpan {field.Name} {{ get; set; }}
+$@"        [TimeSpanRange(required: {(field.Nullable == true ? "false" : "true")}, minimumTime: ""{field.MinValue}"", maximumTime: ""{field.MaxValue}"")]
+        public TimeSpan{(field.Nullable == true ? "?" : "")} {field.Name} {{ get; set; }}
 ";
 
                         PropertiesForEntityConfiguration +=
 $@"//{field.Name}
                 entity.Property(e => e.{field.Name})
                     .HasColumnType(""time(7)"")
-                    .IsRequired(true);
+                    .IsRequired({(field.Nullable == true ? "false" : "true")});
 
                 ";
 
@@ -669,8 +682,8 @@ $@"//{field.Name}
                         iForImportInService += 1;
 
                         PropertiesForEntity +=
-$@"        [Library.ModelAttributeValidator.HexColour(""{field.Name}"", ""{field.Name}"", {(field.Nullable == true ? "false" : "true")}, ""{field.MinValue}"", ""{field.MaxValue}"")]
-        public string? {field.Name} {{ get; set; }}
+$@"        [String(required: {(field.Nullable == true ? "false" : "true")}, minimumLength: ""6"", maximumLength: ""6"", pattern: """")]
+        public string{(field.Nullable == true ? "?" : "")} {field.Name} {{ get; set; }}
 ";
 
                         PropertiesForEntityConfiguration +=
@@ -752,8 +765,8 @@ $@"//{field.Name}
                         iForImportInService += 1;
 
                         PropertiesForEntity +=
-$@"        { (field.Nullable == true ? "" : $@"[Library.ModelAttributeValidator.Required(""{field.Name}"", ""{field.Name}"")]") }
-        public string? {field.Name} {{ get; set; }}
+$@"        [String(required: {(field.Nullable == true ? "false" : "true")}, minimumLength: {field.MinValue}, maximumLength: {field.MaxValue}, pattern: """")]
+        public string{(field.Nullable == true ? "?" : "")} {field.Name} {{ get; set; }}{(field.Nullable == true ? "" : " = string.Empty;")}
 ";
 
                         PropertiesForEntityConfiguration +=
@@ -827,8 +840,8 @@ $@"//{field.Name}
                         iForImportInService += 1;
 
                         PropertiesForEntity +=
-$@"        {(field.Nullable == true ? "" : $@"[Library.ModelAttributeValidator.Required(""{field.Name}"", ""{field.Name}"")]")}
-        public string? {field.Name} {{ get; set; }}
+$@"        [String(required: {(field.Nullable == true ? "false" : "true")}, minimumLength: ""{field.MinValue}"", maximumLength: ""{field.MaxValue}"", pattern: """")]
+        public string{(field.Nullable == true ? "?" : "")} {field.Name} {{ get; set; }}
 ";
 
                         PropertiesForEntityConfiguration +=
@@ -953,8 +966,8 @@ $@"//{field.Name}
                         iForImportInService += 1;
 
                         PropertiesForEntity +=
-$@"        [Library.ModelAttributeValidator.String(""{field.Name}"", ""{field.Name}"", {(field.Nullable == true ? "false" : "true")}, {field.MinValue}, {field.MaxValue}, {(field.Regex == "" ? @"""""" : $@"""{field.Regex}""")})]
-        public string? {field.Name} {{ get; set; }}
+$@"        [String(required: {(field.Nullable == true ? "false" : "true")}, minimumLength: {field.MinValue}, maximumLength: {field.MaxValue}, pattern: ""{field.Regex}"")]   
+        public string{(field.Nullable == true ? "?" : "")} {field.Name} {{ get; set; }}{(field.Nullable == true ? "" : " = string.Empty;")}
 ";
 
                         PropertiesForEntityConfiguration +=
@@ -1027,8 +1040,8 @@ $@"//{field.Name}
                         iForImportInService += 1;
 
                         PropertiesForEntity +=
-$@"        [Library.ModelAttributeValidator.String(""{field.Name}"", ""{field.Name}"", {(field.Nullable == true ? "false" : "true")}, {field.MinValue}, {field.MaxValue}, {(field.Regex == "" ? @"""""" : $@"""{field.Regex}""")})]
-        public string? {field.Name} {{ get; set; }}
+$@"        [String(required: {(field.Nullable == true ? "false" : "true")}, minimumLength: {field.MinValue}, maximumLength: {field.MaxValue}, pattern: ""{field.Regex}"")]
+        public string{(field.Nullable == true ? "?" : "")} {field.Name} {{ get; set; }}
 ";
 
                         PropertiesForEntityConfiguration +=
@@ -1112,8 +1125,8 @@ $@"//{field.Name}
                         iForImportInService += 1;
 
                         PropertiesForEntity +=
-$@"        [Library.ModelAttributeValidator.String(""{field.Name}"", ""{field.Name}"", {(field.Nullable == true ? "false" : "true")}, {field.MinValue}, {field.MaxValue}, {(field.Regex == "" ? @"""""" : $@"""{field.Regex}""")})]
-        public string? {field.Name} {{ get; set; }}
+$@"        [String(required: {(field.Nullable == true ? "false" : "true")}, minimumLength: {field.MinValue}, maximumLength: {field.MaxValue}, pattern: ""{field.Regex}"")]
+        public string{(field.Nullable == true ? "?" : "")} {field.Name} {{ get; set; }}
 ";
 
                         PropertiesForEntityConfiguration +=
@@ -1199,8 +1212,8 @@ $@"//{field.Name}
                         iForImportInService += 1;
 
                         PropertiesForEntity +=
-$@"        [Library.ModelAttributeValidator.String(""{field.Name}"", ""{field.Name}"", {(field.Nullable == true ? "false" : "true")}, {field.MinValue}, {field.MaxValue}, {(field.Regex == "" ? @"""""" : $@"""{field.Regex}""")})]
-        public string? {field.Name} {{ get; set; }}
+$@"        [String(required: {(field.Nullable == true ? "false" : "true")}, minimumLength: {field.MinValue}, maximumLength: {field.MaxValue}, pattern: ""{field.Regex}"")]
+        public string{(field.Nullable == true ? "?" : "")} {field.Name} {{ get; set; }}{(field.Nullable == true ? "" : " = string.Empty;")}
 ";
 
                         PropertiesForEntityConfiguration +=
@@ -1284,8 +1297,8 @@ $@"//{field.Name}
                         iForImportInService += 1;
 
                         PropertiesForEntity +=
-$@"        [Library.ModelAttributeValidator.String(""{field.Name}"", ""{field.Name}"", {(field.Nullable == true ? "false" : "true")}, {field.MinValue}, {field.MaxValue}, {(field.Regex == "" ? @"""""" : $@"""{field.Regex}""")})]
-        public string? {field.Name} {{ get; set; }}
+$@"        [String(required: {(field.Nullable == true ? "false" : "true")}, minimumLength: {field.MinValue}, maximumLength: {field.MaxValue}, pattern: ""{field.Regex}"")]
+        public string{(field.Nullable == true ? "?" : "")} {field.Name} {{ get; set; }}
 ";
 
                         PropertiesForEntityConfiguration +=
@@ -1423,8 +1436,8 @@ $@"//{field.Name}
                         iForImportInService += 1;
 
                         PropertiesForEntity +=
-$@"        [Library.ModelAttributeValidator.String(""{field.Name}"", ""{field.Name}"", {(field.Nullable == true ? "false" : "true")}, {field.MinValue}, {field.MaxValue}, {(field.Regex == "" ? @"""""" : $@"""{field.Regex}""")})]
-        public string? {field.Name} {{ get; set; }}
+$@"        [String(required: {(field.Nullable == true ? "false" : "true")}, minimumLength: {field.MinValue}, maximumLength: {field.MaxValue}, pattern: ""{field.Regex}"")]
+        public string{(field.Nullable == true ? "?" : "")} {field.Name} {{ get; set; }}
 ";
 
                         PropertiesForEntityConfiguration +=
@@ -1555,23 +1568,35 @@ $@"//{field.Name}
     private string {field.ForeignTableName}{field.ForeignColumnName} {{ get; set; }} = """";
     ";
 
+                            CancelationTokensProperties_BlazorNonQueryPage += $@"private CancellationTokenSource CancellationTokenSourceFor{field.ForeignTableName}ModalSearchBar = new();
+    ";
+
                             Injections_BlazorNonQueryPage += $@"@using {Project.Name}.Areas.{Table.Area}.{field.ForeignTableName}Back.Entities;
 @using {Project.Name}.Areas.{Table.Area}.{field.ForeignTableName}Back.Repositories;
 @inject {field.ForeignTableName}Repository {field.ForeignTableName.ToLower()}Repository;
 ";
 
                             PropertiesForEntity +=
-$@"        [Library.ModelAttributeValidator.Key(""{field.Name}"", ""{field.Name}"")]
-        public long {field.Name} {{ get; set; }}
+$@"        [Range(1, long.MaxValue)]
+        public long{(field.Nullable == true ? "?" : "")} {field.Name} {{ get; set; }}
 ";
 
                             Searchers_BlazorNonQueryPage += $@"private async Task SearchText{field.Name}(ChangeEventArgs args)
     {{
+        CancellationTokenSourceFor{field.ForeignTableName}ModalSearchBar.Cancel();
+        CancellationTokenSourceFor{field.ForeignTableName}ModalSearchBar = new();
+
         try
         {{
+            await Task.Delay(300, CancellationTokenSourceFor{field.ForeignTableName}ModalSearchBar.Token);
+
             string TextToSearch = args.Value.ToString();
 
             lst{field.ForeignTableName} = await {field.ForeignTableName.ToLower()}Repository.GetAllBy{field.Name}ForModalAsync(TextToSearch);
+        }}
+        catch (TaskCanceledException)
+        {{
+            //User still writing, do nothing and wait for the next event to trigger
         }}
         catch (Exception ex)
         {{
@@ -1659,7 +1684,8 @@ $@"        [Library.ModelAttributeValidator.Key(""{field.Name}"", ""{field.Name}
                         else
                         {
                             PropertiesForEntity +=
-$@"        public int {field.Name} {{ get; set; }}
+$@"        [Range(1, long.MaxValue)]
+        public long{(field.Nullable == true ? "?" : "")} {field.Name} {{ get; set; }}
 ";
                         }
 

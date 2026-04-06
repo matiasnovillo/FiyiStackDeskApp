@@ -7,7 +7,7 @@
             try
             {
                 string Content =
-                $@"@page ""/CMS/{Table.Area}/{Table.Name}NonQueryPage/{{{Table.Name}Id:int}}""
+                $@"@page ""/cms/{Table.Area.ToLower()}/{Table.Name.ToLower()}nonquerypage/{{{Table.Name}Id:int}}""
 
 @inherits {GeneratorConfigurationComponent.ChosenProject.Name}.Components.Base.CMSBase;
 
@@ -129,6 +129,9 @@ else
     
     //FOREIGN LISTS (TABLES)
     {GeneratorConfigurationComponent.G1FieldChainer.ForeignListsDeclaration_BlazorNonQueryPage}
+
+    //CANCELATION TOKENS
+    {GeneratorConfigurationComponent.G1FieldChainer.CancelationTokensProperties_BlazorNonQueryPage}
     #endregion
 
     protected override void OnInitialized()
@@ -145,8 +148,8 @@ else
 
                 await base.IsUserAvailableToUseThisPage(""/CMS/{Table.Area}/{Table.Name}QueryPage"");
 
-                lstFoldersAndPagesForSideNavDTO = rolemenuRepository
-                    .GetAllPagesAndFoldersForCMSByRoleId(base.User!.RoleId);
+                lstFoldersAndPagesForSideNavDTO = await rolemenuRepository
+                    .GetAllPagesAndFoldersForCMSByRoleIdAsync(base.User!.RoleId);
 
                 //FOREIGN LISTS (TABLES)
                 {GeneratorConfigurationComponent.G1FieldChainer.ForeignListsGet_BlazorNonQueryPage}
@@ -224,7 +227,7 @@ else
                     .UpdateAsync({Table.Name});
             }}
             
-            NavigationManager.NavigateTo(""CMS/{Table.Area}/{Table.Name}QueryPage"");
+            NavigationManager.NavigateTo(""/cms/{Table.Area.ToLower()}/{Table.Name.ToLower()}querypage"");
         }}
         catch (Exception ex)
         {{

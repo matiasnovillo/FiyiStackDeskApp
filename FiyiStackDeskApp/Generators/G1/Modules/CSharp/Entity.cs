@@ -7,7 +7,8 @@
             try
             {
                 string Content =
-                $@"
+                $@"using {GeneratorConfigurationComponent.ChosenProject.Name}.Library.ModelAttributeValidator;
+using System.ComponentModel.DataAnnotations;
 
 {Library.Security.WaterMark(Library.Security.EWaterMarkFor.CSharp)}
 
@@ -16,19 +17,12 @@ namespace {GeneratorConfigurationComponent.ChosenProject.Name}.Areas.{Table.Area
     public class {Table.Name}
     {{
         {GeneratorConfigurationComponent.G1FieldChainer.PropertiesForEntity}
-    
-        public string ToStringOnlyValuesForHTML()
-        {{
-                return $@""<tr>
-                    {GeneratorConfigurationComponent.G1FieldChainer.PropertiesInHTMLForEntity}
-                    </tr>"";
-        }}
     }}
 }}";
 
                 return Content;
             }
-            catch (Exception ex) { throw ex; }
+            catch (Exception) { throw; }
         }
     }
 }

@@ -7,7 +7,7 @@
             try
             {
                 string Content =
-                $@"@page ""/CMS/{Table.Area}/{Table.Name}QueryPage""
+                $@"@page ""/cms/{Table.Area.ToLower()}/{Table.Name.ToLower()}querypage""
 
 @inherits {GeneratorConfigurationComponent.ChosenProject.Name}.Components.Base.CMSBase;
 
@@ -42,7 +42,7 @@
                     </h3>
                     <div class=""d-flex gap-2"">
                         <NavLink class=""btn btn-outline-dark btn-sm text-nowrap"" 
-                        href=""/cms/panel-de-control"">
+                        href=""/panel-de-control"">
                             <span class=""fas fa-chevron-left"" aria-hidden=""true""></span>
                             &nbsp;Volver
                         </NavLink>
@@ -757,10 +757,10 @@
             {{
                 await base.GetUserIdFromCookies();
 
-                await base.IsUserAvailableToUseThisPage(""/CMS/{Table.Area}/{Table.Name}QueryPage"");
+                await base.IsUserAvailableToUseThisPage(""/cms/{Table.Area.ToLower()}/{Table.Name.ToLower()}QueryPage"");
 
-                lstFoldersAndPagesForSideNavDTO = rolemenuRepository
-                                .GetAllPagesAndFoldersForCMSByRoleId(base.User.RoleId);
+                lstFoldersAndPagesForSideNavDTO = await rolemenuRepository
+                                .GetAllPagesAndFoldersForCMSByRoleIdAsync(base.User.RoleId);
 
                 paginated{Table.Name}DTO = await {Table.Name.ToLower()}Repository
                                                 .GetAllBy{Table.Name}IdPaginatedAsync(
@@ -1162,11 +1162,11 @@
                     return;
                 }}
 
-                dt{Table.Name} = {Table.Name.ToLower()}Repository.GetAllBy{Table.Name}IdInDataTable(lstLONG{Table.Name}Checked);
+                dt{Table.Name} = await {Table.Name.ToLower()}Repository.GetAllBy{Table.Name}IdInDataTableAsync(lstLONG{Table.Name}Checked);
             }}
             else
             {{
-                dt{Table.Name} = {Table.Name.ToLower()}Repository.GetAllInDataTable();
+                dt{Table.Name} = await {Table.Name.ToLower()}Repository.GetAllInDataTableAsync();
             }}
 
             //Prepare path to download
