@@ -21,7 +21,7 @@ using System.Data;
 
 namespace {GeneratorConfigurationComponent.ChosenProject.Name}.Areas.{Table.Area}.{Table.Name}Back.Repositories
 {{
-    public class {Table.Name}Repository(
+    public partial class {Table.Name}Repository(
         IDbContextFactory<{GeneratorConfigurationComponent.ChosenProject.Name}DbContext> _factory) : I{Table.Name}Repository
     {{
         #region Async Queries    
@@ -58,13 +58,13 @@ namespace {GeneratorConfigurationComponent.ChosenProject.Name}.Areas.{Table.Area
             return List{Table.Name};
         }}
 
-        public async Task<List<{Table.Name}>> GetAllBy{Table.Name}IdCheckedAsync(List<long> ListChecked{Table.Name}Ids)
+        public async Task<List<{Table.Name}>> GetAllBy{Table.Name}IdCheckedAsync(List<long> listChecked{Table.Name}Ids)
         {{
             await using var DbContext = await _factory.CreateDbContextAsync();
 
             List<{Table.Name}> List{Table.Name} = await DbContext.{Table.Name}
                 .AsNoTracking()
-                .Where(x => ListChecked{Table.Name}Ids.Contains(x.{Table.Name}Id))
+                .Where(x => listChecked{Table.Name}Ids.Contains(x.{Table.Name}Id))
                 .ToListAsync();
 
             return List{Table.Name};
@@ -89,7 +89,7 @@ namespace {GeneratorConfigurationComponent.ChosenProject.Name}.Areas.{Table.Area
         {{
             await using var DbContext = await _factory.CreateDbContextAsync();
 
-                string[] words = Regex
+                string[] Words = Regex
                     .Replace(textToSearch
                     .Trim(), @""\s+"", "" "")
                     .Split("" "", StringSplitOptions.RemoveEmptyEntries);
@@ -97,8 +97,8 @@ namespace {GeneratorConfigurationComponent.ChosenProject.Name}.Areas.{Table.Area
                 List<{Table.Name}> List{Table.Name} = await DbContext.{Table.Name}
                     .AsNoTracking()
                     .Where(x => strictSearch ?
-                        words.All(word => x.{Table.Name}Id.ToString().Contains(word)) :
-                        words.Any(word => x.{Table.Name}Id.ToString().Contains(word)))
+                        Words.All(word => x.{Table.Name}Id.ToString().Contains(word)) :
+                        Words.Any(word => x.{Table.Name}Id.ToString().Contains(word)))
                     .OrderByDescending(x => x.DateTimeLastModification)
                     .Skip((pageIndex - 1) * pageSize)
                     .Take(pageSize)
@@ -151,11 +151,11 @@ namespace {GeneratorConfigurationComponent.ChosenProject.Name}.Areas.{Table.Area
             return AffectedRowsNumber;
         }}
 
-        public async Task<int> AddRangeAsync(List<{Table.Name}> lst{Table.Name})
+        public async Task<int> AddRangeAsync(List<{Table.Name}> list{Table.Name})
         {{
             await using var DbContext = await _factory.CreateDbContextAsync();
 
-            await DbContext.{Table.Name}.AddRangeAsync(lst{Table.Name});
+            await DbContext.{Table.Name}.AddRangeAsync(list{Table.Name});
 
             int AffectedRowsNumber = await DbContext.SaveChangesAsync();
 
@@ -194,11 +194,11 @@ namespace {GeneratorConfigurationComponent.ChosenProject.Name}.Areas.{Table.Area
             return AffectedRowsNumber;
         }}
 
-        public async Task<int> DeleteManyAsync(List<{Table.Name}> List{Table.Name})
+        public async Task<int> DeleteManyAsync(List<{Table.Name}> list{Table.Name})
         {{
             await using var DbContext = await _factory.CreateDbContextAsync();
 
-            DbContext.{Table.Name}.RemoveRange(List{Table.Name});
+            DbContext.{Table.Name}.RemoveRange(list{Table.Name});
 
             int AffectedRows = await DbContext.SaveChangesAsync();
 
@@ -207,7 +207,7 @@ namespace {GeneratorConfigurationComponent.ChosenProject.Name}.Areas.{Table.Area
         #endregion
 
         #region Methods for DataTable
-        public async Task<DataTable> GetAllBy{Table.Name}IdInDataTableAsync(List<long> ListChecked{Table.Name}Ids)
+        public async Task<DataTable> GetAllBy{Table.Name}IdInDataTableAsync(List<long> listChecked{Table.Name}Ids)
         {{
             await using var DbContext = await _factory.CreateDbContextAsync();
 
@@ -218,7 +218,7 @@ namespace {GeneratorConfigurationComponent.ChosenProject.Name}.Areas.{Table.Area
 
             var ListChecked{Table.Name} = await DbContext.{Table.Name}
                 .AsNoTracking()
-                .Where(x => ListChecked{Table.Name}Ids.Contains(x.{Table.Name}Id))
+                .Where(x => listChecked{Table.Name}Ids.Contains(x.{Table.Name}Id))
                 .ToListAsync();
 
             foreach ({Table.Name} {Table.Name} in ListChecked{Table.Name})

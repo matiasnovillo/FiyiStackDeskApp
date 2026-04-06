@@ -15,7 +15,7 @@ using System.Data;
 
 namespace {GeneratorConfigurationComponent.ChosenProject.Name}.Areas.{Table.Area}.{Table.Name}Back.Interfaces
 {{
-    public interface I{Table.Name}Repository
+    public partial interface I{Table.Name}Repository
     {{
         #region Async Queries
         Task<int> CountAsync();
@@ -24,7 +24,7 @@ namespace {GeneratorConfigurationComponent.ChosenProject.Name}.Areas.{Table.Area
 
         Task<List<{Table.Name}>> GetAllAsync();
 
-        Task<List<{Table.Name}>> GetAllBy{Table.Name}IdCheckedAsync(List<long> ListChecked{Table.Name}Ids);
+        Task<List<{Table.Name}>> GetAllBy{Table.Name}IdCheckedAsync(List<long> listChecked{Table.Name}Ids);
 
         Task<List<{Table.Name}>> GetAllBy{Table.Name}IdForModalAsync(string textToSearch);
 
@@ -37,7 +37,7 @@ namespace {GeneratorConfigurationComponent.ChosenProject.Name}.Areas.{Table.Area
         #region Async Non-Queries
         Task<int> AddAsync({Table.Name} {Table.Name.ToLower()});
 
-        Task<int> AddRangeAsync(List<{Table.Name}> List{Table.Name});
+        Task<int> AddRangeAsync(List<{Table.Name}> list{Table.Name});
 
         Task<int> UpdateAsync({Table.Name} {Table.Name.ToLower()});
 
@@ -45,11 +45,11 @@ namespace {GeneratorConfigurationComponent.ChosenProject.Name}.Areas.{Table.Area
 
         Task<int> DeleteAllAsync();
 
-        Task<int> DeleteManyAsync(List<{Table.Name}> List{Table.Name});
+        Task<int> DeleteManyAsync(List<{Table.Name}> list{Table.Name});
         #endregion
 
         #region Methods for DataTable
-        Task<DataTable> GetAllBy{Table.Name}IdInDataTableAsync(List<long> ListChecked{Table.Name}Ids);
+        Task<DataTable> GetAllBy{Table.Name}IdInDataTableAsync(List<long> listChecked{Table.Name}Ids);
 
         Task<DataTable> GetAllInDataTableAsync();
         #endregion

@@ -2,21 +2,18 @@
 {
     public static partial class CSharp
     {
-        public static string Entity(G1ConfigurationComponent GeneratorConfigurationComponent, Areas.FiyiStackDeskApp.TableBack.Entities.Table Table)
+        public static string EntityCustom(G1ConfigurationComponent GeneratorConfigurationComponent, Areas.FiyiStackDeskApp.TableBack.Entities.Table Table)
         {
             try
             {
                 string Content =
-                $@"using {GeneratorConfigurationComponent.ChosenProject.Name}.Library.ModelAttributeValidator;
-using System.ComponentModel.DataAnnotations;
-
-{Library.Security.WaterMark(Library.Security.EWaterMarkFor.CSharp)}
+                $@"{Library.Security.WaterMark(Library.Security.EWaterMarkFor.CSharp)}
 
 namespace {GeneratorConfigurationComponent.ChosenProject.Name}.Areas.{Table.Area}.{Table.Name}Back.Entities
 {{
     public partial class {Table.Name}
     {{
-        {GeneratorConfigurationComponent.G1FieldChainer.PropertiesForEntity}
+        //Put your custom code here
     }}
 }}";
 

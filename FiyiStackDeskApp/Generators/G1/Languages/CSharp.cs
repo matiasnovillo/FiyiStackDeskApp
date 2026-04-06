@@ -63,6 +63,27 @@ namespace FiyiStackDeskApp.Generators.G1.Languages
                         Content);
 
                     }
+
+                    if (g1ConfigurationComponent.G1Configuration.WantEntity)
+                    {
+                        string EntityPath = $"{g1ConfigurationComponent.ChosenProject.Path}\\Areas\\{Table.Area}\\{Table.Name}Back\\Entities\\";
+                        if (Directory.Exists(EntityPath))
+                        {
+                            LogText += $"Carpeta {EntityPath} existe {Environment.NewLine}";
+                        }
+                        else
+                        {
+                            LogText += $"Carpeta {EntityPath} no existe. Creandola {Environment.NewLine}";
+                            Directory.CreateDirectory(EntityPath);
+                        }
+
+                        Content = Modules.CSharp.CSharp.EntityCustom(g1ConfigurationComponent, Table);
+
+                        SharedComponent.CreateFile(
+                        $"{EntityPath}{Table.Name}Custom.cs",
+                        Content);
+
+                    }
                     #endregion
 
                     #region C# Interface for repository
@@ -130,6 +151,27 @@ namespace FiyiStackDeskApp.Generators.G1.Languages
                         Content);
 
                     }
+
+                    if (g1ConfigurationComponent.G1Configuration.WantInterfaces)
+                    {
+                        string InterfacePath = $"{g1ConfigurationComponent.ChosenProject.Path}\\Areas\\{Table.Area}\\{Table.Name}Back\\Interfaces\\";
+                        if (Directory.Exists(InterfacePath))
+                        {
+                            LogText += $"Carpeta {InterfacePath} existe {Environment.NewLine}";
+                        }
+                        else
+                        {
+                            LogText += $"Carpeta {InterfacePath} no existe. Creandola {Environment.NewLine}";
+                            Directory.CreateDirectory(InterfacePath);
+                        }
+
+                        Content = Modules.CSharp.CSharp.InterfaceRepositoryCustom(g1ConfigurationComponent, Table);
+
+                        SharedComponent.CreateFile(
+                        $"{InterfacePath}I{Table.Name}RepositoryCustom.cs",
+                        Content);
+
+                    }
                     #endregion
 
                     #region C# Repository
@@ -152,6 +194,22 @@ namespace FiyiStackDeskApp.Generators.G1.Languages
                         $"{RepositoryPath}{Table.Name}Repository.cs",
                         Content);
 
+                        string RepositoryPathCustomRepository = $"{g1ConfigurationComponent.ChosenProject.Path}\\Areas\\{Table.Area}\\{Table.Name}Back\\Repositories\\";
+                        if (Directory.Exists(RepositoryPathCustomRepository))
+                        {
+                            LogText += $"Carpeta {RepositoryPathCustomRepository} existe {Environment.NewLine}";
+                        }
+                        else
+                        {
+                            LogText += $"Carpeta {RepositoryPathCustomRepository} no existe. Creandola {Environment.NewLine}";
+                            Directory.CreateDirectory(RepositoryPathCustomRepository);
+                        }
+
+                        Content = Modules.CSharp.CSharp.RepositoryCustom(g1ConfigurationComponent, Table);
+
+                        SharedComponent.CreateFile(
+                        $"{RepositoryPathCustomRepository}{Table.Name}RepositoryCustom.cs",
+                        Content);
                     }
                     #endregion
 
