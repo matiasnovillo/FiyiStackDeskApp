@@ -247,8 +247,8 @@
                                 {{
                                     @for (int i = 0; i < Paginated{Table.Name}DTO.List{Table.Name}.Count(); i++)
                                     {{
-                                        long {Table.Name.ToLower()}Id = @Paginated{Table.Name}DTO.List{Table.Name}[i]!.{Table.Name}Id;
-                                        string href = $@""CMS/{Table.Area}/{Table.Name}NonQueryPage/{{{Table.Name.ToLower()}Id}}"";
+                                        long {Table.Name.ToLower()}Id = @Paginated{Table.Name}DTO.List{Table.Name}[i].{Table.Name}Id;
+                                        string href = $@""cms/{Table.Area.ToLower()}/{Table.Name.ToLower()}nonquerypage/{{{Table.Name.ToLower()}Id}}"";
                                         <tr>
                                             <td>
                                                 <input type=""checkbox""
