@@ -206,8 +206,33 @@ $@"        [Long(required: {(field.Nullable == true ? "false" : "true")}, minimu
                             PropertiesInHTML_TD_ForBlazorPageQuery += $@"<td>@Paginated{Table.Name}DTO.List{Table.Name}[i]?.{field.Name}</td>
                                             ";
 
-                            PropertiesInHTML_Card_ForBlazorPageQuery += $@"<p><b>{field.Name}: </b>@Paginated{Table.Name}DTO.List{Table.Name}[i]?.{field.Name}</p>
-                                        ";
+                            if(field.Nullable)
+                            {
+                                PropertiesInHTML_Card_ForBlazorPageQuery += $@"<p>
+                                                <b>{field.Name}:</b>
+                                                <br />
+                                                @if(Paginated{Table.Name}DTO.List{Table.Name}[i].{field.Name} != null)
+                                                {{
+                                                    @Paginated{Table.Name}DTO.List{Table.Name}[i].{field.Name}
+                                                }}
+                                                else
+                                                {{
+                                                    <span class=""badge rounded-pill bg-secondary"">
+                                                        [NULO]
+                                                    </span>
+                                                }}
+                                            </p>
+                                            ";
+                            }
+                            else
+                            {
+                                PropertiesInHTML_Card_ForBlazorPageQuery += $@"<p>
+                                                <b>{field.Name}:</b>
+                                                <br />
+                                                @Paginated{Table.Name}DTO.List{Table.Name}[i].{field.Name}
+                                            </p>
+                                            ";
+                            }
                         }
                         else
                         {
@@ -300,25 +325,29 @@ $@"        public bool{(field.Nullable == true ? "?" : "")} {field.Name} {{ get;
                                             }}
                                             ";
 
-                            PropertiesInHTML_Card_ForBlazorPageQuery += $@"@if (@Paginated{Table.Name}DTO.List{Table.Name}[i]!.{field.Name})
-                                        {{
-                                            <p>
-                                                <b>{field.Name}: </b>
-                                                <span class=""badge rounded-pill bg-success"">
-                                                    Sí
-                                                </span>
+                            PropertiesInHTML_Card_ForBlazorPageQuery += $@"<p>
+                                                <b>{field.Name}:</b>
+                                                <br />
+                                                @if(Paginated{Table.Name}DTO.List{Table.Name}[i]!.{field.Name} == true)
+                                                {{
+                                                    <span class=""badge rounded-pill bg-success"">
+                                                        Sí
+                                                    </span>
+                                                }}
+                                                    else if (Paginated{Table.Name}DTO.List{Table.Name}[i]!.{field.Name} == false)
+                                                {{
+                                                    <span class=""badge rounded-pill bg-danger"">
+                                                        No
+                                                    </span>
+                                                }}
+                                                else
+                                                {{
+                                                    <span class=""badge rounded-pill bg-secondary"">
+                                                        [NULO]
+                                                    </span>
+                                                }}
                                             </p>
-                                        }}
-                                        else
-                                        {{
-                                            <p>
-                                                <b>{field.Name}: </b>
-                                                <span class=""badge rounded-pill bg-danger"">
-                                                    No
-                                                </span>
-                                            </p>
-                                        }}
-                                        ";
+                                            ";
                         }
                         else
                         {
@@ -389,8 +418,21 @@ $@"//{field.Name}
                         PropertiesInHTML_TD_ForBlazorPageQuery += $@"<td>@Paginated{Table.Name}DTO.List{Table.Name}[i]?.{field.Name}</td>
                                             ";
 
-                        PropertiesInHTML_Card_ForBlazorPageQuery += $@"<p><b>{field.Name}: </b>@Paginated{Table.Name}DTO.List{Table.Name}[i]?.{field.Name}</p>
-                                        ";
+                        PropertiesInHTML_Card_ForBlazorPageQuery += $@"<p>
+                                                <b>{field.Name}:</b>
+                                                <br />
+                                                @if(Paginated{Table.Name}DTO.List{Table.Name}[i].{field.Name} != null)
+                                                {{
+                                                    @Paginated{Table.Name}DTO.List{Table.Name}[i].{field.Name}
+                                                }}
+                                                else
+                                                {{
+                                                    <span class=""badge rounded-pill bg-secondary"">
+                                                        [NULO]
+                                                    </span>
+                                                }}
+                                            </p>
+                                            ";
 
                         PropertiesInHTML_BlazorNonQueryPage += $@"<!--{field.Name}-->
                     <div class=""input-group input-group-static mb-5 pb-2"">
@@ -473,9 +515,34 @@ $@"//{field.Name}
 
                         PropertiesInHTML_TD_ForBlazorPageQuery += $@"<td>@Paginated{Table.Name}DTO.List{Table.Name}[i]?.{field.Name}</td>
                                             ";
-
-                        PropertiesInHTML_Card_ForBlazorPageQuery += $@"<p><b>{field.Name}: </b>@Paginated{Table.Name}DTO.List{Table.Name}[i]?.{field.Name}</p>
-                                        ";
+                        if(field.Nullable)
+                        {
+                            PropertiesInHTML_Card_ForBlazorPageQuery += $@"<p>
+                                                <b>{field.Name}:</b>
+                                                <br />
+                                                @if(Paginated{Table.Name}DTO.List{Table.Name}[i].{field.Name} != null)
+                                                {{
+                                                    @Paginated{Table.Name}DTO.List{Table.Name}[i].{field.Name}
+                                                }}
+                                                else
+                                                {{
+                                                    <span class=""badge rounded-pill bg-secondary"">
+                                                        [NULO]
+                                                    </span>
+                                                }}
+                                            </p>
+                                            ";
+                        }
+                        else
+                        {
+                            PropertiesInHTML_Card_ForBlazorPageQuery += $@"<p>
+                                                <b>{field.Name}:</b>
+                                                <br />
+                                                @Paginated{Table.Name}DTO.List{Table.Name}[i].{field.Name}
+                                            </p>
+                                            ";
+                        }
+                        
 
                         PropertiesInHTML_BlazorNonQueryPage += $@"<!--{field.Name}-->
                     <div class=""input-group input-group-static mb-5 pb-2"">
@@ -598,8 +665,33 @@ $@"        [DateTimeRange(required: {(field.Nullable == true ? "false" : "true")
                             PropertiesInHTML_TD_ForBlazorPageQuery += $@"<td>@Paginated{Table.Name}DTO.List{Table.Name}[i]?.{field.Name}</td>
                                             ";
 
-                            PropertiesInHTML_Card_ForBlazorPageQuery += $@"<p><b>{field.Name}: </b>@Paginated{Table.Name}DTO.List{Table.Name}[i]?.{field.Name}</p>
-                                        ";
+                            if (field.Nullable)
+                            {
+                                PropertiesInHTML_Card_ForBlazorPageQuery += $@"<p>
+                                                <b>{field.Name}:</b>
+                                                <br />
+                                                @if(Paginated{Table.Name}DTO.List{Table.Name}[i].{field.Name} != null)
+                                                {{
+                                                    @Paginated{Table.Name}DTO.List{Table.Name}[i].{field.Name}
+                                                }}
+                                                else
+                                                {{
+                                                    <span class=""badge rounded-pill bg-secondary"">
+                                                        [NULO]
+                                                    </span>
+                                                }}
+                                            </p>
+                                            ";
+                            }
+                            else
+                            {
+                                PropertiesInHTML_Card_ForBlazorPageQuery += $@"<p>
+                                                <b>{field.Name}:</b>
+                                                <br />
+                                                @Paginated{Table.Name}DTO.List{Table.Name}[i].{field.Name}
+                                            </p>
+                                            ";
+                            }
                         }
                         else
                         {
@@ -671,8 +763,35 @@ $@"//{field.Name}
                         PropertiesInHTML_TD_ForBlazorPageQuery += $@"<td>@Paginated{Table.Name}DTO.List{Table.Name}[i]?.{field.Name}</td>
                                             ";
 
-                        PropertiesInHTML_Card_ForBlazorPageQuery += $@"<p><b>{field.Name}: </b>@Paginated{Table.Name}DTO.List{Table.Name}[i]?.{field.Name}</p>
-                                        ";
+                        if (field.Nullable)
+                        {
+                            PropertiesInHTML_Card_ForBlazorPageQuery += $@"<p>
+                                                <b>{field.Name}:</b>
+                                                <br />
+                                                @if(Paginated{Table.Name}DTO.List{Table.Name}[i].{field.Name} != null)
+                                                {{
+                                                    @Paginated{Table.Name}DTO.List{Table.Name}[i].{field.Name}
+                                                }}
+                                                else
+                                                {{
+                                                    <span class=""badge rounded-pill bg-secondary"">
+                                                        [NULO]
+                                                    </span>
+                                                }}
+                                            </p>
+                                            ";
+                        }
+                        else
+                        {
+                            PropertiesInHTML_Card_ForBlazorPageQuery += $@"<p>
+                                                <b>{field.Name}:</b>
+                                                <br />
+                                                @Paginated{Table.Name}DTO.List{Table.Name}[i].{field.Name}
+                                            </p>
+                                            ";
+                        }
+
+                        
 
                         PropertiesInHTML_BlazorNonQueryPage += $@"<!--{field.Name}-->
                     <div class=""input-group input-group-static mb-5 pb-2"">
@@ -751,18 +870,30 @@ $@"//{field.Name}
 
                         PropertiesInHTML_TD_ForBlazorPageQuery += $@"<td>
                                                 <span style=""color:@Paginated{Table.Name}DTO.List{Table.Name}[i]?.{field.Name}"">
-                                                    <b class=""fas fa-palette""></b>
+                                                    <i class=""fas fa-palette""></i>
                                                     @Paginated{Table.Name}DTO.List{Table.Name}[i]?.{field.Name}
                                                 </span>
                                             </td>
                                             ";
 
-                        PropertiesInHTML_Card_ForBlazorPageQuery += $@"<p style=""color:@Paginated{Table.Name}DTO.List{Table.Name}[i]?.{field.Name};"">
-                                            <b>{field.Name}: </b>
-                                            <b class=""fas fa-palette""></b>
-                                            @Paginated{Table.Name}DTO.List{Table.Name}[i]?.{field.Name}
-                                        </p>
-                                        ";
+                        PropertiesInHTML_Card_ForBlazorPageQuery += $@"<p>
+                                                <b>{field.Name}:</b>
+                                                <br />
+                                                @if(Paginated{Table.Name}DTO.List{Table.Name}[i].{field.Name} != null)
+                                                {{
+                                                    <span style=""color:#@Paginated{Table.Name}DTO.List{Table.Name}[i].{field.Name}"">
+                                                        <i class=""fas fa-palette""></i>
+                                                        #@Paginated{Table.Name}DTO.List{Table.Name}[i].{field.Name}
+                                                    </span>
+                                                }}
+                                                else
+                                                {{
+                                                    <span class=""badge rounded-pill bg-secondary"">
+                                                        [NULO]
+                                                    </span>
+                                                }}
+                                            </p>
+                                            ";
 
                         PropertiesInHTML_BlazorNonQueryPage += $@"<!--{field.Name}-->
                     <div class=""input-group input-group-static mb-5 pb-2"">
@@ -837,8 +968,21 @@ $@"//{field.Name}
                         PropertiesInHTML_TD_ForBlazorPageQuery += $@"<td>@Paginated{Table.Name}DTO.List{Table.Name}[i]?.{field.Name}</td>
                                             ";
 
-                        PropertiesInHTML_Card_ForBlazorPageQuery += $@"<div><b>{field.Name}: </b>@Paginated{Table.Name}DTO.List{Table.Name}[i]?.{field.Name}</div>
-                                        ";
+                        PropertiesInHTML_Card_ForBlazorPageQuery += $@"<p>
+                                                <b>{field.Name}:</b>
+                                                <br />
+                                                @if(Paginated{Table.Name}DTO.List{Table.Name}[i].{field.Name} != null)
+                                                {{
+                                                    @Paginated{Table.Name}DTO.List{Table.Name}[i].{field.Name}
+                                                }}
+                                                else
+                                                {{
+                                                    <span class=""badge rounded-pill bg-secondary"">
+                                                        [NULO]
+                                                    </span>
+                                                }}
+                                            </p>
+                                            ";
 
                         PropertiesInHTML_BlazorNonQueryPage += $@"<!--{field.Name}-->
                     <div class=""input-group input-group-static mb-5 pb-2"">
@@ -914,8 +1058,21 @@ $@"//{field.Name}
                         PropertiesInHTML_TD_ForBlazorPageQuery += $@"<td>@Paginated{Table.Name}DTO.List{Table.Name}[i]?.{field.Name}</td>
                                             ";
 
-                        PropertiesInHTML_Card_ForBlazorPageQuery += $@"<div><b>{field.Name}: </b>@Paginated{Table.Name}DTO.List{Table.Name}[i]?.{field.Name}</div>
-                                        ";
+                        PropertiesInHTML_Card_ForBlazorPageQuery += $@"<div class=""mb-3"">
+                                                <b>{field.Name}:</b>
+                                                <br />
+                                                @if(Paginated{Table.Name}DTO.List{Table.Name}[i].{field.Name} != null)
+                                                {{
+                                                    @((MarkupString)Paginated{Table.Name}DTO.List{Table.Name}[i].{field.Name}!)
+                                                }}
+                                                else
+                                                {{
+                                                    <span class=""badge rounded-pill bg-secondary"">
+                                                        [NULO]
+                                                    </span>
+                                                }}
+                                            </div>
+                                            ";
 
                         PropertiesInHTML_BlazorNonQueryPage += $@"<!--{field.Name}-->
                     <div class=""mb-3"">
@@ -1042,8 +1199,21 @@ $@"//{field.Name}
                         PropertiesInHTML_TD_ForBlazorPageQuery += $@"<td>@Paginated{Table.Name}DTO.List{Table.Name}[i]?.{field.Name}</td>
                                             ";
 
-                        PropertiesInHTML_Card_ForBlazorPageQuery += $@"<p><b>{field.Name}: </b>@Paginated{Table.Name}DTO.List{Table.Name}[i]?.{field.Name}</p>
-                                        ";
+                        PropertiesInHTML_Card_ForBlazorPageQuery += $@"<p>
+                                                <b>{field.Name}:</b>
+                                                <br />
+                                                @if(Paginated{Table.Name}DTO.List{Table.Name}[i].{field.Name} != null)
+                                                {{
+                                                    @Paginated{Table.Name}DTO.List{Table.Name}[i].{field.Name}
+                                                }}
+                                                else
+                                                {{
+                                                    <span class=""badge rounded-pill bg-secondary"">
+                                                        [NULO]
+                                                    </span>
+                                                }}
+                                            </p>
+                                            ";
 
                         PropertiesInHTML_BlazorNonQueryPage += $@"<!--{field.Name}-->
                     <div class=""input-group input-group-static mb-5 pb-2"">
@@ -1124,13 +1294,25 @@ $@"//{field.Name}
                                             </td>
                                             ";
 
-                        PropertiesInHTML_Card_ForBlazorPageQuery += $@"<a class=""nav-link text-info px-0""
-                                            href=""tel:@Paginated{Table.Name}DTO.List{Table.Name}[i]?.{field.Name}"">
-                                            <b>{field.Name}: </b>
-                                            <b class=""fas fa-phone""></b>
-                                            @Paginated{Table.Name}DTO.List{Table.Name}[i]?.{field.Name}
-                                        </a>
-                                        ";
+                        PropertiesInHTML_Card_ForBlazorPageQuery += $@"<p>
+                                                <b>{field.Name}:</b>
+                                                <br />
+                                                @if(Paginated{Table.Name}DTO.List{Table.Name}[i].{field.Name} != null)
+                                                {{
+                                                    <a class=""nav-link text-info px-0""
+                                                        href=""tel:@Paginated{Table.Name}DTO.List{Table.Name}[i].{field.Name}"">
+                                                        <i class=""fas fa-phone""></i>
+                                                        @Paginated{Table.Name}DTO.List{Table.Name}[i].{field.Name}
+                                                    </a>
+                                                }}
+                                                else
+                                                {{
+                                                    <span class=""badge rounded-pill bg-secondary"">
+                                                        [NULO]
+                                                    </span>
+                                                }}
+                                            </p>
+                                            ";
 
                         PropertiesInHTML_BlazorNonQueryPage += $@"<!--{field.Name}-->
                     <div class=""input-group input-group-static mb-5 pb-2"">
@@ -1212,14 +1394,26 @@ $@"//{field.Name}
                                             </td>
                                             ";
 
-                        PropertiesInHTML_Card_ForBlazorPageQuery += $@"<a class=""nav-link text-info px-0""
-                                            href=""@Paginated{Table.Name}DTO.List{Table.Name}[i]?.{field.Name}""
-                                            target=""_blank"">
-                                            <b>{field.Name}: </b>
-                                            <b class=""fas fa-link""></b>
-                                            @Paginated{Table.Name}DTO.List{Table.Name}[i]?.{field.Name}
-                                        </a>
-                                        ";
+                        PropertiesInHTML_Card_ForBlazorPageQuery += $@"<p>
+                                                <b>{field.Name}:</b>
+                                                <br />
+                                                @if(Paginated{Table.Name}DTO.List{Table.Name}[i].{field.Name} != null)
+                                                {{
+                                                    <a class=""nav-link text-info px-0""
+                                                        href=""@Paginated{Table.Name}DTO.List{Table.Name}[i].{field.Name}""
+                                                        target=""_blank"">
+                                                        <i class=""fas fa-link""></i>
+                                                        @Paginated{Table.Name}DTO.List{Table.Name}[i].{field.Name}
+                                                    </a>
+                                                }}
+                                                else
+                                                {{
+                                                    <span class=""badge rounded-pill bg-secondary"">
+                                                        [NULO]
+                                                    </span>
+                                                }}
+                                            </p>
+                                            ";
 
                         PropertiesInHTML_BlazorNonQueryPage += $@"<!--{field.Name}-->
                     <div class=""input-group input-group-static mb-5 pb-2"">
@@ -1300,13 +1494,25 @@ $@"//{field.Name}
                                             </td>
                                             ";
 
-                        PropertiesInHTML_Card_ForBlazorPageQuery += $@"<a class=""nav-link text-info px-0""
-                                            href=""mailto:@Paginated{Table.Name}DTO.List{Table.Name}[i]?.{field.Name}"">
-                                            <b>{field.Name}: </b>
-                                            <b class=""fas fa-envelope""></b>
-                                            @Paginated{Table.Name}DTO.List{Table.Name}[i]?.{field.Name}
-                                        </a>
-                                        ";
+                        PropertiesInHTML_Card_ForBlazorPageQuery += $@"<p>
+                                                <b>{field.Name}:</b>
+                                                <br />
+                                                @if(Paginated{Table.Name}DTO.List{Table.Name}[i].{field.Name} != null)
+                                                {{
+                                                    <a class=""nav-link text-info px-0""
+                                                        href=""mailto:@Paginated{Table.Name}DTO.List{Table.Name}[i].{field.Name}"">
+                                                        <i class=""fas fa-envelope""></i>
+                                                        @Paginated{Table.Name}DTO.List{Table.Name}[i].{field.Name}
+                                                    </a>
+                                                }}
+                                                else
+                                                {{
+                                                    <span class=""badge rounded-pill bg-secondary"">
+                                                        [NULO]
+                                                    </span>
+                                                }}
+                                            </p>
+                                            ";
 
                         PropertiesInHTML_BlazorNonQueryPage += $@"<!--{field.Name}-->
                     <div class=""input-group input-group-static mb-5 pb-2"">
@@ -1534,8 +1740,21 @@ $@"//{field.Name}
                         PropertiesInHTML_TD_ForBlazorPageQuery += $@"<td>@Paginated{Table.Name}DTO.List{Table.Name}[i]?.{field.Name}</td>
                                             ";
 
-                        PropertiesInHTML_Card_ForBlazorPageQuery += $@"<p><b>{field.Name}: </b>@Paginated{Table.Name}DTO.List{Table.Name}[i]?.{field.Name}</p>
-                                        ";
+                        PropertiesInHTML_Card_ForBlazorPageQuery += $@"<p>
+                                                <b>{field.Name}:</b>
+                                                <br />
+                                                @if(Paginated{Table.Name}DTO.List{Table.Name}[i].{field.Name} != null)
+                                                {{
+                                                    @Paginated{Table.Name}DTO.List{Table.Name}[i].{field.Name}
+                                                }}
+                                                else
+                                                {{
+                                                    <span class=""badge rounded-pill bg-secondary"">
+                                                        [NULO]
+                                                    </span>
+                                                }}
+                                            </p>
+                                            ";
 
                         PropertiesInHTML_BlazorNonQueryPage += $@"<!--{field.Name}-->
                     <div class=""input-group input-group-static mb-5 pb-2"">
@@ -1765,8 +1984,12 @@ $@"        [Range(1, long.MaxValue)]
                             PropertiesInHTML_TH_ForBlazorPageQuery += $@"<th>{field.Name}</th>
                                     ";
 
-                            PropertiesInHTML_Card_ForBlazorPageQuery += $@"<p><b>{field.Name}: </b>@Paginated{Table.Name}DTO.List{Table.Name}[i]?.{field.Name}</p>
-                                        ";
+                            PropertiesInHTML_Card_ForBlazorPageQuery += $@"<p>
+                                                <b>{field.Name}:</b>
+                                                <br />
+                                                @Paginated{Table.Name}DTO.List{Table.Name}[i].{field.Name}
+                                            </p>
+                                            ";
                         }
                         else
                         {
